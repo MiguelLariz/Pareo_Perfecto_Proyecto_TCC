@@ -176,6 +176,12 @@ void ordenVertices( )
         for ( int l = 0; l < tamanioMatriz; l++ ) matrizClon[ posicion ][ l ] = 0;
         
     }
+
+    for ( int i = 0; i < tamanioMatriz; i++ )
+    {
+        cout << ordenPareo[ i ] << " ";
+    }
+    
 }
 
 
