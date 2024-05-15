@@ -34,6 +34,7 @@ int tamanioMatriz = 0; // Tamanio de la matriz utilizada
 int matriz[ 100 ][ 100 ]; // Matriz para guardar los valore originales
 int matrizClon[ 100 ][ 100 ]; // Matriz para poder trabajar sin perder valores originales
 int ordenPareo[ 100 ]; // Ordenar le menor al mayor conexiones los vertices
+string pareoVertices[ 100 ];
 
 
 // Prototipos
@@ -42,6 +43,7 @@ void imprimirMatriz( ); // Imprimir la matriz original
 void imprimirMatrizClon( ); // Imprimir la matrizClon
 void copiarMatriz( ); // Copiar de la matriz a la matrizClon
 void ordenVertices( ); // Ordenar los vertices del menor conexiones al mayor
+void pareo( ); // Pareo de vertices
 
 
 // Funcion principal
@@ -79,8 +81,8 @@ int main()
         indice = 0;
     }
 
-    // cout << endl << "Matriz obtenida del documento.txt " << endl << endl;
-    // imprimirMatriz( ); // Mostrar la matriz obtenida del archivo
+    cout << endl << "Matriz obtenida del documento 'matriz_adyacencia.txt' " << endl << endl;
+    imprimirMatriz( ); // Mostrar la matriz obtenida del archivo
 
     ordenVertices( );
 
@@ -97,6 +99,7 @@ void vaciarMatriz( )
     {
         for ( int k = 0; k < 100; k++) matriz[ i ][ k ] = 0 , matrizClon[ i ][ k ];
         ordenPareo[ i ] = false;
+        pareoVertices[ i ] = "";
     }
 }
 
@@ -176,12 +179,98 @@ void ordenVertices( )
         for ( int l = 0; l < tamanioMatriz; l++ ) matrizClon[ posicion ][ l ] = 0;
         
     }
-
-    for ( int i = 0; i < tamanioMatriz; i++ )
-    {
-        cout << ordenPareo[ i ] << " ";
-    }
     
+    pareo( );
+}
+
+
+// Pareo de vertices para creación de individuos
+void pareo( )
+{
+    int menorPeso = 0; // Menor peso del vertice 
+    int verticePareo = 0; // Vertice con el que se parea
+    int numeroIndividuo = 0; // Creación de individuo con el pareo
+    int numeroVertice = 1; // Variable para guardar el valor de los vertices
+
+    duplicarMatriz( ); // Duplicar la matriz con los valores originales
+
+    // Titulo de lo que se hace
+    cout << endl << endl << "Individuos que se generan: " << endl;
+
+    // Recorrido de todas las posiciones del ordenPareo
+    for ( int i = 0; i < tamanioMatriz; i++)
+    {
+
+        // Reiniciar la variable de comparaciones
+        menorPeso = 100;
+
+        // Si ya se hizo el pareo sigue avanzando
+        if( ordenPareo[ i ] != -1 )
+        {
+
+            // Recorrer la matriz para encontrar le menos peso y después hacer pareo
+            for ( int k = 0; k < tamanioMatriz; k++ )
+            {
+
+                // Buscar el menor peso y diferente de 0
+                if ( matrizClon[ ordenPareo[ i ] ][ k ] < menorPeso && matrizClon[ ordenPareo[ i ] ][ k ] != 0 )
+                {
+
+                    // Cambiar el menor peso para seguir buscando
+                    menorPeso = matrizClon[ ordenPareo[ i ] ][ k ];
+
+                    // Guardar el vertice del menor peso
+                    verticePareo = k;
+                }
+                
+            }
+
+            // Mostrar el individuo creado
+            cout << endl << "Individuo " << ( numeroIndividuo + 1 ) << ": " << ( ordenPareo[ i ] + 1 ) << " - " << ( verticePareo + 1 );
+
+            // Guardar el individuo para despues unirlo con los otros
+            pareoVertices[ numeroIndividuo ] += "( V" + to_string( numeroVertice ) + ": " + to_string( ( ordenPareo[ i ] + 1 ) ) + " , ";
+            numeroVertice++;
+
+            pareoVertices[ numeroIndividuo ] += "V" + to_string( numeroVertice ) + ": " + to_string( ( verticePareo + 1 ) ) + " )";
+            numeroVertice++;
+
+            // Aumentar el indice de los individuos
+            numeroIndividuo++;
+
+            // Eliminar el renglon y columna de los 
+            for ( int f = 0; f < tamanioMatriz; f++ )
+            {
+                matrizClon[ ordenPareo[ i ] ][ f ] = 0;
+                matrizClon[ f ][ ordenPareo[ i ] ] = 0;
+                matrizClon[ verticePareo ][ f ] = 0;
+                matrizClon[ f ][ verticePareo ] = 0;
+            }
+
+            // Eliminarlo para que no sea tomado en cuenta para la siguiente vuelta
+            ordenPareo[ i ] = -1;
+
+            // Buscar y eliminar el vertice que hace pareo
+            for ( int z = 0; z < tamanioMatriz; z++ )
+            {
+                if( ordenPareo[ z ] == verticePareo )
+                {
+                    ordenPareo[ z ] = -1;
+                    break;
+                }
+            }
+        }
+    }
+
+    // Imprimir el pareo de los vertices
+    cout << endl << endl << "Union de individuos " << endl;
+
+    // Mostrar resultados
+    for ( int d = 0; d < numeroIndividuo; d++ )
+    {
+        cout << pareoVertices[ d ];
+        if ( ( d + 1 ) != numeroIndividuo ) cout << " , ";
+    }
 }
 
 
