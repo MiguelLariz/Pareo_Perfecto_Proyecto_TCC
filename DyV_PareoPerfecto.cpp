@@ -59,6 +59,7 @@ int main()
 	system( "cls" ); // Limpiar consola
 	system( "title Algoritmo Gloton" ); // Cambiar el titulo de la consola
 	setlocale( LC_ALL , "" ); // Aceptar acentos
+    srand (time(NULL)); // Para generar los numeros aleatorios
 
     bool terminar = true , error = false;
     char salir;
@@ -186,7 +187,7 @@ void matrizAleatoria( )
     int randomCero = 0;
 
     // Cambiar peso de arista
-    int cambioPeso = 0;
+    int cambioPeso = -1;
 
     do
     {
@@ -196,7 +197,7 @@ void matrizAleatoria( )
         if ( valorCorrecto ) cout << " El valor ingresado es incorrecto, intenta con otro " << endl;
 
         // Lectura del tamanio de la matriz
-        cout << "Tamanio de la matriz:"; cin >> tamanioMatriz;
+        cout << "Tamanio de la matriz: "; cin >> tamanioMatriz;
 
         // Error en el tamanio
         valorCorrecto = true;
@@ -213,9 +214,16 @@ void matrizAleatoria( )
             // Generar random para aumentar el tamanio de los 0
             randomCero = rand( ) % 100;
 
+            // La diagonal principal sigue siendo cero
+            if ( k != i )
+            {
+                if ( randomCero <= 50 ) matriz[ i ][ k ] = 0;
+                else matriz[ i ][ k ] = 1 + rand() % 10;
+            }
+            
+
             // Generar valores entre 0 y 10
-            if ( randomCero <= 50 ) matriz[ i ][ k ] = 0;
-            else matriz[ i ][ k ] = 1 + rand() % 10;
+            
         }
 
         // Reiniciar variables por si todo el renglon es 0
@@ -233,7 +241,11 @@ void matrizAleatoria( )
         // Cambiar algun peso por 1 si es todo 0
         if ( todoCeros && ( i + 1 ) != tamanioMatriz )
         {
-            cambioPeso = i + rand() % ( tamanioMatriz - i );
+            while ( cambioPeso == i)
+            {
+                cambioPeso = i + rand() % ( tamanioMatriz - i );
+            }
+            
             matriz[ i ][ cambioPeso ] = 1;
         }
     }
