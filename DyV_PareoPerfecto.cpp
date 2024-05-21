@@ -129,6 +129,7 @@ int main()
 
             system( "pause" );
 
+            // Opcion de salida, solo acepta la letra 'y' o 'n'
             do
             {
                 system( "cls" );
@@ -175,6 +176,7 @@ int main()
 void matrizAleatoria( )
 {
 
+    // Titulo de la funcion seleccionada
     cout << "Matriz aleatoria" << endl;
 
     // Por si hay un error
@@ -217,7 +219,7 @@ void matrizAleatoria( )
             // La diagonal principal sigue siendo cero
             if ( k != i )
             {
-                if ( randomCero <= 50 ) matriz[ i ][ k ] = 0;
+                if ( randomCero <= 30 ) matriz[ i ][ k ] = 0;
                 else matriz[ i ][ k ] = 1 + rand() % 10;
             }
             
@@ -262,7 +264,7 @@ void matrizAleatoria( )
     }
 
     // Mostrar la matriz generada
-    cout << " Matriz generada" << endl;
+    cout << endl << " Matriz generada " << endl;
     imprimirMatriz( );
 
     // Detener
@@ -273,6 +275,10 @@ void matrizAleatoria( )
 // el archivo se debe llamar "matriz_adyacencia.txt"
 void leerArchivo( )
 {
+
+    // Lectura del archivo
+    cout << "Lectura del archivo externo txt" << endl;
+
     vaciarMatriz( ); // Vaciar completamente la matriz global
 
     string nombreArchivo = "matriz_adyacencia.txt"; // Encontrar el archivo
@@ -311,6 +317,10 @@ void leerArchivo( )
 // Llenar la matriz de manera manual
 void valoresManual( )
 {
+
+    // Titulo de la opcion selccionada
+    cout << " Lectura de valores manualmente " << endl;
+
     bool valorCorrecto = false;
 
     do
